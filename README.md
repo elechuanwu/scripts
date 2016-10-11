@@ -1,2 +1,2 @@
 # scripts
-commonly used scripts.
+Personal commonly used scripts.
