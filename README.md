@@ -5,7 +5,9 @@ Personal commonly used scripts.
 
 ### v2ex
 
-1. cp example.main.ini main.ini
-2. modify main.ini
-3. run v2ex.py
+1. cd spiders
+2. pip install -r requirements.txt
+3. cp example.main.ini main.ini
+4. modify main.ini
+5. python v2ex.py
 
