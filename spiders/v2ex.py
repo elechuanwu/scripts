@@ -3,9 +3,14 @@ import json
 import requests
 from bs4 import BeautifulSoup
 import time
+import ConfigParser
 
-V2EX_USERNAME = 'chuanwu'
-V2EX_PASSWD   = '123456'
+config = ConfigParser.RawConfigParser()
+config.read('main.ini')
+V2EX_USERNAME = config.get('v2ex', 'username')
+V2EX_PASSWD   = config.get('v2ex', 'passwd')
+
+BASE_URL = "https://www.v2ex.com{}"
 
 headers = {
     'accept':'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
@@ -46,7 +51,17 @@ def login_in_v2ex():
                 "next": "/"
         }
         resp = session.post(login_url, data=data, headers=headers)
-        print resp.content
+        return resp.content
 
-login_in_v2ex()
+def fetch_hot_topics(html_doc):
+    soup = BeautifulSoup(html_doc, "html.parser")
+    hot_topics = soup.findAll("span", class_="item_hot_topic_title")
+    for hot_topic in hot_topics:
+        title = hot_topic.get_text()
+        hrefs = hot_topic.findAll("a")
+        href = hrefs[0]
+        url = BASE_URL.format(href.get('href'))
+        print title, url
+
+fetch_hot_topics(login_in_v2ex())
 
